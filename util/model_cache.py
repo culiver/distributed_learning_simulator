@@ -22,7 +22,7 @@ class ModelCache:
         self, new_parameter_dict: ParameterDictType
     ) -> ParameterDictType:
         return {
-            k: v - self.cached_parameter_dict[k] for k, v in new_parameter_dict.items()
+            k: v - self.cached_parameter_dict[k].cuda() for k, v in new_parameter_dict.items()
         }
 
     def add_parameter_diff(self, parameter_diff: ParameterDictType) -> None:

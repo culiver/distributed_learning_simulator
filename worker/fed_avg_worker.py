@@ -49,7 +49,7 @@ class FedAVGWorker(Client, AggregationWorker, ModelCache):
             parameter_data = sent_data.pop("parameter")
             parameter_diff = self.get_parameter_diff(parameter_data)
             sent_data["parameter_diff"] = parameter_diff
-        self.discard_model_cache()
+        # self.discard_model_cache()
         self.send_data_to_server(sent_data)
         self.get_result_from_server()
 

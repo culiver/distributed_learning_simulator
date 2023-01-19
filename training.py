@@ -35,7 +35,7 @@ def start_executors(
         practitioner = worker_config.pop("practitioner")
         workers.append(
             practitioner.create_worker(
-                **worker_config,
+                **worker_config, # {'worker_constructor': <class 'worker.fed_avg_worker.FedAVGWorker'>, 'worker_id': 0, 'endpoint_cls': functools.partial(<class 'topology.cs_endpoint.ClientEndpoint'>), 'config': DistributedTrainingConfig()}
                 device_lock=device_lock,
                 topology=topology,
                 task_id=task_id,
@@ -88,6 +88,7 @@ def train(
     config.apply_global_config()
     set_file_handler(config.log_file)
     worker_config = get_worker_config(config, practitioner_ids=practitioner_ids)
+    # Topology is something similar to list of multi-processing queue
     topology = worker_config.pop("topology")
     device_lock = multiprocessing.Manager().RLock()
     task_id: int | None = None
@@ -96,6 +97,7 @@ def train(
     process_pool = TorchProcessPool(
         initializer=process_initializer, initargs=(device_lock, topology)
     )
+    # The iter num here is the number of parallel processing, which depends on the number of devices.
     for process_idx, worker_configs in worker_config["worker_map"].items():
         server_config = None
         if process_idx == 0:

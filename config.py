@@ -53,8 +53,12 @@ global_config: DistributedTrainingConfig = DistributedTrainingConfig()
 
 @hydra.main(config_path="conf", version_base=None)
 def load_config(conf) -> None:
+    # Load config from yaml files
     conf = next(iter(conf.values()))
+    # Start build cutomized config class based on yaml config
+    attrs = vars(global_config)
     global_config.load_config_from_file(conf)
+    attrs = vars(global_config)
 
 
 # def load_config_from_file(dataset_name: str, distributed_algorithm: str):

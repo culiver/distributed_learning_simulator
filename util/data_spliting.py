@@ -7,6 +7,8 @@ from cyy_torch_toolbox.ml_type import MachineLearningPhase, TransformType
 class DataSplitter:
     def __init__(self, config):
         self.__config = config
+        # Type dc : DatasetCollection, contain train, val, test sub-datasets, which is torch Dataset type
+        # The function build torch Dataset mostly provided by torchvision. To increase self-defined dataset add file at anaconda3/envs/FL/lib/python3.10/site-packages/cyy_torch_toolbox/datasets
         dc = config.create_dataset_collection()
         parts = [1] * config.worker_number
         self.__dataset_indices = {}
